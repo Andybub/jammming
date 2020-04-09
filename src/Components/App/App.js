@@ -16,17 +16,38 @@ class App extends React.Component {
       ],
       playlistName: "My Playlist",
       playlistTracks: [
-        { name: "name 4", artist: "artist 4", album: "album 4", id: "4" },
-        { name: "name 5", artist: "artist 5", album: "album 5", id: "5" },
-        { name: "name 6", artist: "artist 6", album: "album 6", id: "6" },
+        {
+          name: "name 4",
+          artist: "artist 4",
+          album: "album 4",
+          id: "4",
+          uri: "4",
+        },
+        {
+          name: "name 5",
+          artist: "artist 5",
+          album: "album 5",
+          id: "5",
+          uri: "5",
+        },
+        {
+          name: "name 6",
+          artist: "artist 6",
+          album: "album 6",
+          id: "6",
+          uri: "6",
+        },
       ],
     };
 
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
   }
 
+  // 新增歌曲功能
   addTrack(track) {
     if (
       this.state.playlistTracks.find((savedTrack) => savedTrack.id === track.id)
@@ -39,6 +60,7 @@ class App extends React.Component {
     this.setState({ playlistTracks: this.state.playlistTracks });
   }
 
+  // 移除歌曲功能
   removeTrack(track) {
     let updatedTracks = this.state.playlistTracks.filter(
       (savedTrack) => savedTrack.id !== track.id
@@ -46,8 +68,19 @@ class App extends React.Component {
     this.setState({ playlistTracks: updatedTracks });
   }
 
+  // 更新歌單名稱
   updatePlaylistName(name) {
     this.setState({ playlistName: name });
+  }
+
+  // 儲存歌單至使用者帳戶
+  savePlaylist() {
+    alert("This method is linked to the button correctly!");
+    let trackURIs = this.state.playlistTracks.map((track) => track.uri);
+  }
+
+  search(searchTerm) {
+    console.log(searchTerm);
   }
 
   render() {
@@ -57,7 +90,7 @@ class App extends React.Component {
           Ja<span className="highlight">mmm</span>ing
         </h1>
         <div className="App">
-          <SearchBar />
+          <SearchBar onSearch={this.search} />
           <div className="App-playlist">
             <SearchResults
               searchResults={this.state.searchResults}
@@ -68,6 +101,7 @@ class App extends React.Component {
               onNameChange={this.updatePlaylistName}
               playlistTracks={this.state.playlistTracks}
               onRemove={this.removeTrack}
+              onSave={this.savePlaylist}
             />
           </div>
         </div>
