@@ -3,6 +3,7 @@ import "./App.css";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { SearchResults } from "../SearchResults/SearchResults";
 import { Playlist } from "../Playlist/Playlist";
+import Spotify from "../../util/Spotify";
 
 class App extends React.Component {
   constructor(props) {
@@ -10,33 +11,33 @@ class App extends React.Component {
 
     this.state = {
       searchResults: [
-        { name: "name 1", artist: "artist 1", album: "album 1", id: "1" },
-        { name: "name 2", artist: "artist 2", album: "album 2", id: "2" },
-        { name: "name 3", artist: "artist 3", album: "album 3", id: "3" },
+        // { name: "name 1", artist: "artist 1", album: "album 1", id: "1" },
+        // { name: "name 2", artist: "artist 2", album: "album 2", id: "2" },
+        // { name: "name 3", artist: "artist 3", album: "album 3", id: "3" },
       ],
-      playlistName: "My Playlist",
+      playlistName: "New Playlist",
       playlistTracks: [
-        {
-          name: "name 4",
-          artist: "artist 4",
-          album: "album 4",
-          id: "4",
-          uri: "4",
-        },
-        {
-          name: "name 5",
-          artist: "artist 5",
-          album: "album 5",
-          id: "5",
-          uri: "5",
-        },
-        {
-          name: "name 6",
-          artist: "artist 6",
-          album: "album 6",
-          id: "6",
-          uri: "6",
-        },
+        // {
+        //   name: "name 4",
+        //   artist: "artist 4",
+        //   album: "album 4",
+        //   id: "4",
+        //   uri: "4",
+        // },
+        // {
+        //   name: "name 5",
+        //   artist: "artist 5",
+        //   album: "album 5",
+        //   id: "5",
+        //   uri: "5",
+        // },
+        // {
+        //   name: "name 6",
+        //   artist: "artist 6",
+        //   album: "album 6",
+        //   id: "6",
+        //   uri: "6",
+        // },
       ],
     };
 
@@ -75,12 +76,21 @@ class App extends React.Component {
 
   // 儲存歌單至使用者帳戶
   savePlaylist() {
-    alert("This method is linked to the button correctly!");
+    alert("Go check your Spotify and enjoy!");
     let trackURIs = this.state.playlistTracks.map((track) => track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+      this.setState({
+        playlistName: "New Playlist",
+        playlistTracks: [],
+      });
+    });
   }
 
-  search(searchTerm) {
-    console.log(searchTerm);
+  // 搜尋功能
+  search(term) {
+    Spotify.search(term).then((searchResults) => {
+      this.setState({ searchResults: searchResults });
+    });
   }
 
   render() {
